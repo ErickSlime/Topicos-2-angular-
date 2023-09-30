@@ -11,8 +11,20 @@ export class FornecedorService {
 
   constructor(private http: HttpClient) {}
 
-  findAll(): Observable<Fornecedor[]> {
-    return this.http.get<Fornecedor[]>(`${this.baseURL}/fornecedores`);
+  findAll(pagina:number, tamanhoPagina:number): Observable<Fornecedor[]> {
+    const params = {
+      page: pagina.toString(),
+      pageSize: tamanhoPagina.toString()
+    }
+    return this.http.get<Fornecedor[]>(`${this.baseURL}/fornecedores`,{params});
+  }
+
+  findByNome(nome: string,pagina:number, tamanhoPagina:number): Observable<Fornecedor[]> {
+    const params = {
+      page: pagina.toString(),
+      pageSize: tamanhoPagina.toString()
+    }
+    return this.http.get<Fornecedor[]>(`${this.baseURL}/fornecedores/searchByNome/${nome}`, {params});
   }
 
   findById(id: string): Observable<Fornecedor> {
@@ -29,6 +41,14 @@ export class FornecedorService {
 
   delete(fornecedor: Fornecedor): Observable<any> {
     return this.http.delete<Fornecedor>(`${this.baseURL}/fornecedores/${fornecedor.id}`);
+  }
+
+  count(): Observable<number> {
+    return this.http.get<number>(`${this.baseURL}/fornecedores/count`);
+  }
+
+  countByNome(nome: string): Observable<number> {
+    return this.http.get<number>(`${this.baseURL}/fornecedores/count/search/${nome}`);
   }
 
 }

@@ -35,7 +35,7 @@ export class ProdutoFormComponent implements OnInit {
                 descricao:[ '', Validators.required],
                 marca: [null],
                 fornecedor: [null],
-                categorria: [null],
+                categoria: [null],
                 preco:[null],
                 estoque:[null]
               })
@@ -45,19 +45,23 @@ export class ProdutoFormComponent implements OnInit {
   ngOnInit(): void {
 
     // buscando todos para o select
-    this.marcaService.findAll().subscribe(data => {
+    this.marcaService.findAll(0, 20).subscribe(data => {
       this.marcas = data;
       this.initializeForm();
     });
-    this.fornecedorService.findAll().subscribe(data => {
+
+    this.fornecedorService.findAll(0,20).subscribe(data => {
       this.fornecedores = data;
       this.initializeForm();
     });
-    this.categoriaService.findAll().subscribe(data => {
+
+    this.categoriaService.findAll(0,20).subscribe(data => {
       this.categorias = data;
       this.initializeForm();
     });
+    
   }
+
   initializeForm() {
     const produto: Produto = this.activatedRoute.snapshot.data['produto'];
 

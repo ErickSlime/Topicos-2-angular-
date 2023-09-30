@@ -11,8 +11,20 @@ export class CategoriaService {
 
   constructor(private http: HttpClient) {}
 
-  findAll(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(`${this.baseURL}/categorias`);
+  findAll(pagina:number, tamanhoPagina:number): Observable<Categoria[]> {
+    const params = {
+      page: pagina.toString(),
+      pageSize: tamanhoPagina.toString()
+    }
+    return this.http.get<Categoria[]>(`${this.baseURL}/categorias`,{params});
+  }
+
+  findByNome(nome: string,pagina:number, tamanhoPagina:number): Observable<Categoria[]> {
+    const params = {
+      page: pagina.toString(),
+      pageSize: tamanhoPagina.toString()
+    }
+    return this.http.get<Categoria[]>(`${this.baseURL}/categorias/searchByNome/${nome}`, {params});
   }
 
   findById(id: string): Observable<Categoria> {
@@ -29,6 +41,14 @@ export class CategoriaService {
 
   delete(categoria: Categoria): Observable<any> {
     return this.http.delete<Categoria>(`${this.baseURL}/categorias/${categoria.id}`);
+  }
+
+  count(): Observable<number> {
+    return this.http.get<number>(`${this.baseURL}/categorias/count`);
+  }
+
+  countByNome(nome: string): Observable<number> {
+    return this.http.get<number>(`${this.baseURL}/categorias/count/search/${nome}`);
   }
 
 }

@@ -11,8 +11,20 @@ export class EstadoService {
 
   constructor(private http: HttpClient) {}
 
-  findAll(): Observable<Estado[]> {
-    return this.http.get<Estado[]>(`${this.baseURL}/estados`);
+  findAll(pagina:number, tamanhoPagina:number): Observable<Estado[]> {
+    const params = {
+      page: pagina.toString(),
+      pageSize: tamanhoPagina.toString()
+    }
+    return this.http.get<Estado[]>(`${this.baseURL}/estados`,{params});
+  }
+
+  findByNome(nome: string,pagina:number, tamanhoPagina:number): Observable<Estado[]> {
+    const params = {
+      page: pagina.toString(),
+      pageSize: tamanhoPagina.toString()
+    }
+    return this.http.get<Estado[]>(`${this.baseURL}/estados/searchByNome/${nome}`, {params});
   }
 
   findById(id: string): Observable<Estado> {
@@ -29,6 +41,14 @@ export class EstadoService {
 
   delete(estado: Estado): Observable<any> {
     return this.http.delete<Estado>(`${this.baseURL}/estados/${estado.id}`);
+  }
+
+  count(): Observable<number> {
+    return this.http.get<number>(`${this.baseURL}/estados/count`);
+  }
+
+  countByNome(nome: string): Observable<number> {
+    return this.http.get<number>(`${this.baseURL}/estados/count/search/${nome}`);
   }
 
 }

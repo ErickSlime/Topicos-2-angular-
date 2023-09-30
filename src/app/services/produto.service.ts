@@ -12,8 +12,20 @@ export class ProdutoService {
 
   constructor(private http: HttpClient) {}
 
-  findAll(): Observable<Produto[]> {
-    return this.http.get<Produto[]>(`${this.baseURL}/produtos`);
+  findAll(pagina:number, tamanhoPagina:number): Observable<Produto[]> {
+    const params = {
+      page: pagina.toString(),
+      pageSize: tamanhoPagina.toString()
+    }
+    return this.http.get<Produto[]>(`${this.baseURL}/produtos`,{params});
+  }
+
+  findByNome(nome: string,pagina:number, tamanhoPagina:number): Observable<Produto[]> {
+    const params = {
+      page: pagina.toString(),
+      pageSize: tamanhoPagina.toString()
+    }
+    return this.http.get<Produto[]>(`${this.baseURL}/produtos/searchByNome/${nome}`, {params});
   }
 
   findById(id: string): Observable<Produto> {
@@ -48,6 +60,14 @@ export class ProdutoService {
 
   delete(produto: Produto): Observable<any> {
     return this.http.delete<Produto>(`${this.baseURL}/produtos/${produto.id}`);
+  }
+
+  count(): Observable<number> {
+    return this.http.get<number>(`${this.baseURL}/produtos/count`);
+  }
+
+  countByNome(nome: string): Observable<number> {
+    return this.http.get<number>(`${this.baseURL}/produtos/count/search/${nome}`);
   }
 
 }
